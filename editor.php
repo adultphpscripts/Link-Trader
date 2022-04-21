@@ -4,19 +4,19 @@ extract($_SERVER);
 class editor {
 
     const PIN_CODE = '12345';
-    const LIBRARY_FILE = __DIR__ . '/library.dat';
+    private $LIBRARY_FILE = __DIR__ . '/library.dat';
     const _CHR_ = '$';
     public $URL = 'https://' . $HTTP_HOST . $REQUEST_URI;
     
     function get_code($class, $method) {
         if ($class == null || $method == null) { return ''; }
-        $json = json_decode(file_get_contents(self::LIBRARY_FILE), TRUE);
+        $json = json_decode(file_get_contents($this->LIBRARY_FILE), TRUE);
         return $json[$class][$method];
     }
     function get_methods($class) {
         if ($class == null) { return ''; }
         $response = '';
-        $json = json_decode(file_get_contents(self::LIBRARY_FILE), TRUE);
+        $json = json_decode(file_get_contents($this->LIBRARY_FILE), TRUE);
         foreach ($json[$class] as $method => $code) {
             $response.='<option value="' . $method . '">';
         }
@@ -25,7 +25,7 @@ class editor {
     
     function get_classes() {
         $response = '';
-        $json = json_decode(file_get_contents(self::LIBRARY_FILE), TRUE);
+        $json = json_decode(file_get_contents($this->LIBRARY_FILE), TRUE);
         foreach ($json as $class => $nxt) {
             $response.='<option value="' . $class . '">';
         }
@@ -34,7 +34,7 @@ class editor {
 
     function save_data() {
         $data = '';
-        $json = json_decode(file_get_contents(self::LIBRARY_FILE), TRUE);
+        $json = json_decode(file_get_contents($this->LIBRARY_FILE), TRUE);
         foreach ($json as $class => $nxt) {
             $data.='class ' . $class . ' extends library { ' . PHP_EOL;
             foreach ($nxt as $method => $code) {
